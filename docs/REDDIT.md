@@ -8,11 +8,11 @@ Repo: https://github.com/ChianW/quota-floater · Release: v0.1.0.
 > "ccusage/tokscale estimate spend from local logs. Quota Floater shows the
 > **official** remaining-quota windows straight from each provider (Claude 5h/week,
 > Codex, Kimi, Cursor, Copilot, OpenRouter credits, ...) as an always-on-top strip.
-> 19 providers, MIT, reuses Token Monitor's probes verbatim. No settings panel —
+> 21 providers, MIT, reuses Token Monitor's probes verbatim. No settings panel —
 > your coding agent sets it up from docs/SETUP.md."
 
 Differentiators to lead with: **official numbers** (not estimates), **always-on-top
-strip** (not a dashboard you open), **19 providers incl. the CN ecosystem**
+strip** (not a dashboard you open), **21 providers incl. the CN ecosystem**
 (Kimi / Z.ai / Qoder / Volcengine), **agent-first install**.
 
 ## Account prep (do this 1–2 weeks before any launch post)
@@ -60,7 +60,7 @@ Every new provider wiring / feature = a future post. Do not burn everything on d
 - **Title formula**: pain + "I built" + concrete outcome.
   Example: *"I got tired of guessing when my Claude 5h window resets, so I built
   an always-on-top strip that shows the official remaining quota of every AI plan
-  I pay for (19 providers, MIT)"*
+  I pay for (21 providers, MIT)"*
 - **Format**: text post with a native GIF/short video of the floater + repo link.
   Text posts with media outperform bare links. Host media natively (v.redd.it) —
   not a link to a video.

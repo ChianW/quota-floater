@@ -59,7 +59,7 @@ themselves report.
 
 Quota Floater is a tiny always-on-top strip that shows the official remaining-quota
 windows — Claude 5h/week, Codex rate limits, Kimi 5h/week, Cursor month, Copilot
-chat, OpenRouter credits — for 19 providers, straight from each provider's own
+chat, OpenRouter credits — for 21 providers, straight from each provider's own
 quota endpoint.
 
 Design choices you all will care about:
@@ -79,7 +79,7 @@ Windows floater (Tk) + cross-platform CLI (Node >= 20, no install: unzip and run
 
 ```
 Implementation notes:
-- collect.js orchestrates 19 probes in parallel; each probe is the upstream
+- collect.js orchestrates 21 probes in parallel; each probe is the upstream
   Token Monitor module copied verbatim into vendor/tm-shared (MIT), including
   limitCollector.js for Claude (OAuth + web-cookie + CLI fallback paths) and
   Codex.
@@ -112,7 +112,7 @@ wanted the official numbers.
 So I built Quota Floater (MIT, free): a tiny always-on-top strip showing the
 official remaining-quota windows reported by the providers themselves — Claude
 5h + week, plus Codex, Kimi, Cursor, Copilot, OpenRouter credits, Antigravity,
-Z.ai, DeepSeek... 19 providers total, one strip.
+Z.ai, DeepSeek... 21 providers total, one strip.
 
 I built this [disclosure]. Details:
 - Official numbers, not estimates — it calls each provider's own quota endpoint
@@ -134,7 +134,7 @@ Happy to answer anything about the quota endpoints or the agent-driven setup.
 **Title**
 
 ```
-Quota Floater now reads your Claude Code OAuth directly — always-on-top official 5h/week quota, 19 providers, MIT
+Quota Floater now reads your Claude Code OAuth directly — always-on-top official 5h/week quota, 21 providers, MIT
 ```
 
 **Body**: reuse the r/ClaudeAI body, replace first paragraph with:
@@ -142,7 +142,7 @@ Quota Floater now reads your Claude Code OAuth directly — always-on-top offici
 ```
 Quota Floater (MIT) now probes Claude quota straight from your local Claude Code
 credentials (token refresh handled in place), alongside Codex, Kimi, Cursor,
-Copilot, OpenRouter and 14 more — official windows only, no log estimation.
+Copilot, OpenRouter and 15 more — official windows only, no log estimation.
 ```
 
 ## 4. r/cursor (Day T+7, mod-gated)
@@ -159,7 +159,7 @@ Repo: https://github.com/ChianW/quota-floater
 ## 5. r/ChatGPTCoding (Day T+7, weekly self-promo thread)
 
 ```
-Quota Floater — always-on-top strip of the official remaining quota for 19 AI
+Quota Floater — always-on-top strip of the official remaining quota for 21 AI
 coding plans (Claude, Codex, Kimi, Cursor, Copilot, OpenRouter, ...). Official
 endpoints, not log estimates; sanitized snapshot; agent-driven setup (no
 settings panel). MIT + free: https://github.com/ChianW/quota-floater
@@ -173,7 +173,7 @@ of them. So I built a tiny always-on-top strip that shows the OFFICIAL numbers
 — straight from each provider's own quota endpoint. [attach video]
 
 2/ Claude 5h + week, Codex rate limits, Kimi, Cursor month, Copilot, OpenRouter
-credits, Antigravity, Z.ai, DeepSeek... 19 providers, one strip. Official
+credits, Antigravity, Z.ai, DeepSeek... 21 providers, one strip. Official
 windows only — no token-spend guessing.
 
 3/ Zero-secret design: probes read local credential files; the UI's snapshot is
@@ -211,7 +211,7 @@ Add Quota Floater – always-on-top official quota strip for AI coding plans
 ```
 Quota Floater shows the official remaining-quota windows (5h/week/month) that
 providers themselves report — Claude, Codex, Kimi, Cursor, Copilot, OpenRouter
-and 14 more — as an always-on-top strip or CLI. Agent-driven setup, sanitized
+and 15 more — as an always-on-top strip or CLI. Agent-driven setup, sanitized
 snapshots, MIT. Probes reused from Token Monitor (MIT).
 https://github.com/ChianW/quota-floater
 ```
