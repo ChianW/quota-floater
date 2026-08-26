@@ -1,9 +1,11 @@
-# Capture README assets for the floater: a PNG screenshot and an animated GIF.
-# Only the floater rectangle is ever recorded; a solid backdrop window sits
-# behind it so the semi-transparent UI composites onto a clean dark surface.
-# The floater is temporarily moved to the primary monitor and expanded; the
-# user's settings.json is restored afterwards.
-# Usage: python scripts/capture-floater.py [--no-gif]
+# Capture README/social assets for the floater: a PNG screenshot, an animated
+# GIF, and an MP4 demo. Only the floater rectangle is ever recorded; a solid
+# backdrop window sits behind it so the semi-transparent UI composites onto a
+# clean dark surface. The floater is temporarily moved to the primary monitor
+# and expanded; the user's settings.json is restored afterwards.
+# Demo choreography: hold expanded -> drag a card to reorder -> collapse ->
+# expand. MP4 needs ffmpeg on PATH.
+# Usage: python scripts/capture-floater.py [--no-gif] [--no-mp4]
 import ctypes
 import ctypes.wintypes as wt
 import json
@@ -72,6 +74,21 @@ def double_click(x, y):
         time.sleep(0.08)
 
 
+def drag_card(x, y, dy, steps=16, step_time=0.04, on_step=None):
+    # Press on a card, slide it down/up by dy pixels, release. Tk reads the
+    # motion events, so the cursor path must move in increments.
+    ctypes.windll.user32.SetCursorPos(x, y)
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+    time.sleep(0.2)
+    for i in range(1, steps + 1):
+        ctypes.windll.user32.SetCursorPos(x, y + int(dy * i / steps))
+        time.sleep(step_time)
+        if on_step:
+            on_step()
+    time.sleep(0.2)
+    ctypes.windll.user32.mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+
+
 def toggle_collapse(hwnd, x1, y1, w):
     # Double-click an empty stretch of the title row (between the name label
     # on the left and the min/sync buttons on the right; neither toggles).
@@ -87,6 +104,9 @@ def toggle_collapse(hwnd, x1, y1, w):
 
 def main():
     want_gif = "--no-gif" not in sys.argv
+    want_mp4 = "--no-mp4" not in sys.argv and bool(shutil.which("ffmpeg"))
+    if "--no-mp4" not in sys.argv and not want_mp4:
+        print("capture-floater: ffmpeg not on PATH, skipping mp4")
     root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     out_dir = os.path.join(root_dir, "docs", "assets")
     os.makedirs(out_dir, exist_ok=True)
@@ -148,33 +168,84 @@ def main():
         img.save(png)
         print("wrote", png, img.size)
 
-        if not want_gif:
+        if not (want_gif or want_mp4):
             return
-        frames = []
         canvas_w, canvas_h = img.size
-        t0 = time.time()
-        collapsed_once = False
-        restored = False
-        while time.time() - t0 < 8.0:
+        # 631x1407 are both odd; yuv420p needs even dimensions.
+        mp4 = os.path.join(out_dir, "floater.mp4")
+        ffmpeg = None
+        if want_mp4:
+            ffmpeg = subprocess.Popen([
+                "ffmpeg", "-y", "-loglevel", "error",
+                "-f", "rawvideo", "-pix_fmt", "rgb24",
+                "-s", f"{canvas_w}x{canvas_h}", "-r", "8", "-i", "pipe:0",
+                "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2",
+                "-pix_fmt", "yuv420p", mp4], stdin=subprocess.PIPE)
+
+        stamped = []  # (seconds since t0, canvas)
+
+        def stamp():
             r = wt.RECT()
             user32.GetWindowRect(hwnd, ctypes.byref(r))
-            cur = (r.left, r.top, r.right, r.bottom)
-            shot = grab(cur)
+            shot = grab((r.left, r.top, r.right, r.bottom))
             canvas = Image.new("RGB", (canvas_w, canvas_h), "#101216")
             canvas.paste(shot, (0, 0))
-            frames.append(canvas)
-            elapsed = time.time() - t0
-            if not collapsed_once and elapsed > 1.6:
-                collapsed_once = toggle_collapse(hwnd, r.left, r.top, r.right - r.left)
-            elif collapsed_once and not restored and elapsed > 5.2:
-                double_click(r.left + int((r.right - r.left) * 0.45), r.top + 8)
-                time.sleep(0.3)
-                restored = True
-            time.sleep(0.18)
-        gif = os.path.join(out_dir, "floater.gif")
-        frames[0].save(gif, save_all=True, append_images=frames[1:],
-                       duration=380, loop=0)
-        print("wrote", gif, len(frames), "frames")
+            stamped.append((time.time() - t0, canvas))
+
+        t0 = time.time()
+        dragged = False
+        collapsed_once = False
+        restored = False
+        try:
+            while time.time() - t0 < 10.5:
+                stamp()
+                r = wt.RECT()
+                user32.GetWindowRect(hwnd, ctypes.byref(r))
+                x1, y1w, w_cur = r.left, r.top, r.right - r.left
+                elapsed = time.time() - t0
+                if not dragged and elapsed > 1.5:
+                    # Drag the first card down by roughly two card heights.
+                    drag_card(x1 + int(w_cur * 0.25), y1w + 95, 330,
+                              on_step=stamp)
+                    dragged = True
+                elif dragged and not collapsed_once and elapsed > 4.2:
+                    collapsed_once = toggle_collapse(hwnd, x1, y1w, w_cur)
+                elif collapsed_once and not restored and elapsed > 6.8:
+                    # The collapsed strip lays its empty area out differently
+                    # than the expanded title row; probe several spots.
+                    for frac in (0.45, 0.55, 0.35, 0.65):
+                        double_click(x1 + int(w_cur * frac), y1w + 8)
+                        time.sleep(0.5)
+                        rr = wt.RECT()
+                        user32.GetWindowRect(hwnd, ctypes.byref(rr))
+                        if rr.bottom - rr.top > 200:
+                            restored = True
+                            break
+                    time.sleep(0.3)
+                time.sleep(0.1)
+        finally:
+            if ffmpeg:
+                # Hold-last resample onto a strict 8 fps timeline: blocking
+                # interactions pause the capture, and each pause reads as the
+                # screen holding still, which is what happened live.
+                total = stamped[-1][0]
+                idx = 0
+                slot = 0.0
+                while slot <= total:
+                    while idx + 1 < len(stamped) and stamped[idx + 1][0] <= slot:
+                        idx += 1
+                    ffmpeg.stdin.write(stamped[idx][1].tobytes())
+                    slot += 0.125
+                ffmpeg.stdin.close()
+                ffmpeg.wait(timeout=30)
+        if want_gif:
+            frames = [c for _, c in stamped]
+            gif = os.path.join(out_dir, "floater.gif")
+            frames[0].save(gif, save_all=True, append_images=frames[1:],
+                           duration=380, loop=0)
+            print("wrote", gif, len(frames), "frames")
+        if want_mp4:
+            print("wrote", mp4)
     finally:
         floater.terminate()
         try:
