@@ -4,7 +4,7 @@
 
 - 产品根：`C:\Users\wangq\Desktop\quota-floater`
 - 配套英文：`README.md`、`docs/AGENT.md`、`docs/PROVIDERS.md`、`docs/WIZARD.md`
-- 本目录是本机工具，**没有 `.git`，没有 GitHub 仓库，未 commit**
+- **2026-08-26 起已有公开仓库**：`ChianW/quota-floater`（main，v0.1.0 Release 已带 zip）。本机目录即仓库工作区；日常小改动可正常 commit，push/发版仍先问用户。
 - **禁止**把 cookie / JWT / API key 写进文档、聊天或 zip
 
 ---
@@ -291,8 +291,8 @@ wizard 重启浮窗同样带 Name 过滤：`Name='pythonw.exe'` 再匹配命令�
 | Kimi **月池** | 未接通。需要 **未过期** 的 www.kimi.com `kimi-auth`。OAuth 不够。旧网站会话曾于 2026-08-15 过期。向导已写，方案未闭环。 | 不要把 kimi-code JWT 当月池；不要把 cookie 贴进聊天；不要编一个月接口 |
 | Claude | **已接线**（2026-08-26，vendor `limitCollector.js` 整文件）。本机无凭据，只验证了 skip 路径；happy path 未在本机验证 | 首台真实 Claude 机器的验证结论记回 `docs/SETUP.md` |
 | Codex | **已接线**（同上）。本机无 `~\.codex\auth.json` | 同上 |
-| GitHub | **未开仓库** | 不要假装已发布 |
-| git | **无 `.git`，未 commit** | 未经用户要求不要 `git init` / commit / push |
+| GitHub | **已开仓库并发布 v0.1.0**（2026-08-26，用户明确授权） | 不要在未授权下做后续 push/发版 |
+| git | 已 init / commit / push（按用户指示） | 未经用户要求不再做 push / 发版 |
 | 发布形态 | 已定：**免费 MIT + GitHub Releases**；Sponsors 可选 | **不要做付费墙** |
 | DeepSeek 独立 key | 本机无 `DEEPSEEK_*` env；峰谷 UI 已为 OpenCode 工作 | 不要为了对齐峰谷去改卡片缝/rst 语义 |
 | Claude/Codex 接线 | **已完成**（2026-08-26 vendor 整文件 + collect.js 接线 + 文档） | 仍然不要在生产 collect 里 require `%TEMP%\tm-asar` |
@@ -305,7 +305,7 @@ zip 可以打，但仓库还不存在。发布结论不要改。
 
 1. **先验证，再改。** `cd` 到本目录 → `node collect.js --json` → 确认 `providers[]` 仍出、无密钥泄漏。不要先动 `ui.py` / 卡片缝 / 峰谷文案。
 2. **Kimi 月池只等人，不编协议。** `node kimi-auth-wizard-io.js status`；若不是 live 网站会话，让人类走 `docs/WIZARD.md`。Agent 不跑交互向导，不把 `kimi-auth` 打进聊天。
-3. **发布等用户开口。** 用户明确要公开时：`git init` + GitHub 仓库 → `scripts\pack-release.cmd` → Releases 上 zip（免费 MIT）。在此之前不要接 Claude/Codex，不要改 TM asar，不要做付费墙。
+3. **社媒发布照 playbook 执行。** Reddit 分发策略（账号 karma 预热、分 subreddit 规则、ccusage 式 feature-timed 发帖节奏、帖式模板）已写入 `docs/REDDIT.md`，英文。用户开口即在对应 subreddit 执行。
 
 ---
 
