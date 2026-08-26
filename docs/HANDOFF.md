@@ -47,6 +47,10 @@
 | `docs/PROVIDERS.md` | 21 家 TM id；已接 / 未接；峰谷文案 |
 | `docs/WIZARD.md` | 仅 Kimi 网站 `kimi-auth` |
 | `docs/SETUP.md` | Agent 安装/调试指南（英文）：三层 turn-on 矩阵 + debug 手册 + 平台矩阵 |
+| `docs/REDDIT.md` | Reddit 分发 playbook（英文） |
+| `docs/RELEASE.md` | **本项目发版流程**（验证门/版本规则/CHANGELOG 纪律/发布步骤；以后发版照此执行） |
+| `CHANGELOG.md` / `VERSION` | 版本事实源（0.1.1 起） |
+| `docs/LAUNCH.md` | 发布物料与时间表（英文） |
 | `skill/quota-floater/SKILL.md` | 可直接放进任意 agent skills 目录的接入技能（英文） |
 | `docs/HANDOFF.md` | 本文件 |
 | `scripts/pack-release.js` | 打 `dist/quota-floater.zip` + 密钥扫描 |
@@ -291,7 +295,7 @@ wizard 重启浮窗同样带 Name 过滤：`Name='pythonw.exe'` 再匹配命令�
 | Kimi **月池** | 未接通。需要 **未过期** 的 www.kimi.com `kimi-auth`。OAuth 不够。旧网站会话曾于 2026-08-15 过期。向导已写，方案未闭环。 | 不要把 kimi-code JWT 当月池；不要把 cookie 贴进聊天；不要编一个月接口 |
 | Claude | **已接线**（2026-08-26，vendor `limitCollector.js` 整文件）。本机无凭据，只验证了 skip 路径；happy path 未在本机验证 | 首台真实 Claude 机器的验证结论记回 `docs/SETUP.md` |
 | Codex | **已接线**（同上）。本机无 `~\.codex\auth.json` | 同上 |
-| GitHub | **已开仓库并发布 v0.1.0**（2026-08-26，用户明确授权） | 不要在未授权下做后续 push/发版 |
+| GitHub | **已开仓库并发布 v0.1.0 / v0.1.1**（2026-08-26，用户明确授权）；以后发版照 `docs/RELEASE.md` | 不要在未授权下做后续 push/发版 |
 | git | 已 init / commit / push（按用户指示） | 未经用户要求不再做 push / 发版 |
 | 发布形态 | 已定：**免费 MIT + GitHub Releases**；Sponsors 可选 | **不要做付费墙** |
 | DeepSeek 独立 key | 本机无 `DEEPSEEK_*` env；峰谷 UI 已为 OpenCode 工作 | 不要为了对齐峰谷去改卡片缝/rst 语义 |

@@ -30,6 +30,8 @@ const ROOT_FILES = [
   'kimi-auth-wizard-io.js',
   'README.md',
   'README.txt',
+  'CHANGELOG.md',
+  'VERSION',
   'LICENSE',
   'NOTICE',
   '.gitignore'
@@ -173,8 +175,11 @@ function assertZipMembers(names) {
     'docs/AGENT.md',
     'docs/PROVIDERS.md',
     'docs/SETUP.md',
+    'docs/RELEASE.md',
     'docs/WIZARD.md',
     'skill/quota-floater/SKILL.md',
+    'CHANGELOG.md',
+    'VERSION',
     'vendor/tm-shared/LICENSE'
   ];
   for (const n of need) {
