@@ -1,0 +1,11 @@
+secrets.json
+settings.json
+snapshot.json
+ag-endpoint.json
+floater.log
+dist/
+*.bak
+*.bak-*
+_probe_*.py
+__pycache__/
+tmp_*.png

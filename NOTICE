@@ -1,0 +1,19 @@
+Quota Floater
+=============
+
+This product is Quota Floater. It is not the upstream desktop app.
+
+Third-party probes
+------------------
+
+`vendor/tm-shared/` contains standalone quota probe modules taken from:
+
+    https://github.com/Javis603/token-monitor
+
+Copyright (c) 2026 Javis
+
+Those files are MIT. Full text: `vendor/tm-shared/LICENSE`.
+
+Thanks to Javis603/token-monitor for the official remaining-quota probes.
+Quota Floater reuses those modules. It does not log in, open that app's
+Settings panel, or copy secrets into git.
