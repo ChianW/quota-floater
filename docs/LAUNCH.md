@@ -12,7 +12,7 @@ Reddit rule matrix and evidence: [REDDIT.md](REDDIT.md). Product docs: [SETUP.md
 | State-demo GIF (expand -> collapse -> expand) | `docs/assets/floater.gif` | done, in README |
 | Repo topics | 10 topics set (claude-code, codex, kimi, cursor, ...) | done |
 | Release | v0.1.0 zip on GitHub Releases | done |
-| **TODO owner**: 5–8s native video (drag-reorder + collapse + `sync` click) | record with ScreenToGif or Win+G | Reddit/X strongly prefer native video over GIF links |
+| Demo MP4 (drag reorder + collapse + expand, ~10s) | `docs/assets/floater.mp4` | done — regenerate anytime: `python scripts/capture-floater.py`. Reddit/X prefer this native video over GIF links. |
 
 ## Account preconditions (check before Day 1)
 
