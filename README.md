@@ -1,5 +1,7 @@
 # Quota Floater
 
+English | [简体中文](README.zh-CN.md)
+
 <p align="center">
   <img src="docs/assets/floater.gif" width="360" alt="Quota Floater — always-on-top quota strip">
 </p>
