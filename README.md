@@ -1,5 +1,7 @@
 # Quota Floater
 
+![Quota Floater](docs/assets/floater.gif)
+
 Always-on-top strip of **official remaining quota**. Reuses Token Monitor MIT probes.
 Does not log in, scan tokscale logs, or copy secrets into git.
 
